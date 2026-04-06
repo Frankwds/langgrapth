@@ -2,7 +2,8 @@
 State schema for the Startup Due Diligence workflow.
 """
 
-from typing import TypedDict, List, Optional
+from typing import TypedDict, List, Optional, Annotated
+from operator import add
 
 
 class DueDiligenceState(TypedDict):
@@ -17,10 +18,10 @@ class DueDiligenceState(TypedDict):
     funding_stage: Optional[str]
 
     # RESEARCH
-    research_outputs: List[dict]
+    research_outputs: Annotated[List[dict], add]
 
     # ANALYSIS
-    analysis_outputs: List[dict]
+    analysis_outputs: Annotated[List[dict], add]
 
     # SYNTHESIS
     full_report: Optional[str]
@@ -28,5 +29,5 @@ class DueDiligenceState(TypedDict):
 
     # METADATA
     current_stage: str
-    errors: List[str]
+    errors: Annotated[List[str], add]
     retry_count: int

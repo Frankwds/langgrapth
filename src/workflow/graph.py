@@ -1,6 +1,14 @@
 from langgraph.graph import StateGraph, END
 
 from ..state.schema import DueDiligenceState
+from .nodes import (
+    init_node,
+    research_node,
+    validate_research_node,
+    analysis_node,
+    synthesis_node,
+    output_node,
+)
 
 
 # Why StateGraph with TypedDict? The StateGraph constructor takes our state type
@@ -16,6 +24,12 @@ def create_due_diligence_graph() -> StateGraph:
     # Create the graph with our state type
     workflow = StateGraph(DueDiligenceState)
 
-    # We'll add nodes and edges next
+    # Add nodes to the graph
+    workflow.add_node("init", init_node)
+    workflow.add_node("research", research_node)
+    workflow.add_node("validate_research", validate_research_node)
+    workflow.add_node("analysis", analysis_node)
+    workflow.add_node("synthesis", synthesis_node)
+    workflow.add_node("output", output_node)
 
     return workflow

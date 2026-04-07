@@ -94,3 +94,38 @@ async def run_agent(
             agent_name=agent_name,
             execution_time_ms=elapsed_ms
         )
+    
+def parse_json_from_output(output: str) -> Optional[dict]:
+    """Try to parse JSON from agent output.
+    
+    Handles cases where output contains markdown code blocks or extra text.
+    """
+    if not output:
+        return None
+
+    # Try direct JSON parse
+    try:
+        return json.loads(output)
+    except json.JSONDecodeError:
+        pass
+
+    # Try to extract from markdown code block
+    import re
+    json_pattern = r'```(?:json)?\s*([\s\S]*?)```'
+    matches = re.findall(json_pattern, output)
+    for match in matches:
+        try:
+            return json.loads(match.strip())
+        except json.JSONDecodeError:
+            continue
+
+    # Try to find JSON object in text
+    start_idx = output.find('{')
+    end_idx = output.rfind('}')
+    if start_idx != -1 and end_idx != -1 and end_idx > start_idx:
+        try:
+            return json.loads(output[start_idx:end_idx + 1])
+        except json.JSONDecodeError:
+            pass
+
+    return None

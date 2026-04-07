@@ -24,6 +24,5 @@ async def main():
         status = "OK" if output.get("success") else "FAIL"
         print(f"  [{status}] {output.get('agent')}")
 
-
 if __name__ == "__main__":
     asyncio.run(main())

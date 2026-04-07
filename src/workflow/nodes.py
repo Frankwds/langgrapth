@@ -347,7 +347,31 @@ async def synthesis_node(state: DueDiligenceState) -> Dict[str, Any]:
 
 
 async def output_node(state: DueDiligenceState) -> Dict[str, Any]:
-    """Finalize and present the workflow output."""
-    print("Running: output_node")
-    print("Workflow complete!")
-    return {"current_stage": "complete"}
+    """
+    Finalize output and determine workflow status.
+    """
+    print("\n" + "=" * 60)
+    print("STAGE 5: OUTPUT")
+    print("=" * 60)
+
+    errors = state.get("errors", [])
+    full_report = state.get("full_report")
+    investment_decision = state.get("investment_decision")
+
+    # Determine final status
+    if full_report and investment_decision:
+        status = "complete"
+        print("Workflow completed successfully!")
+    elif full_report or investment_decision:
+        status = "partial"
+        print("Workflow completed with partial results")
+    else:
+        status = "failed"
+        print("Workflow failed")
+
+    if errors:
+        print(f"Total errors encountered: {len(errors)}")
+
+    return {
+        "current_stage": status
+    }

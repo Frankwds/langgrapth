@@ -16,6 +16,7 @@ async def test():
 
     if result.success:
         print(f"\nOutput type: {type(result.output)}")
+        print(f"Raw output (first 500 chars): {result.raw_output[:500]}")
         if isinstance(result.output, dict):
             print(f"Founded: {result.output.get('founded')}")
             print(f"Location: {result.output.get('location')}")

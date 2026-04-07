@@ -1,11 +1,19 @@
 import asyncio
+from src.workflow import run_due_diligence
 
 
-# Why async? LangGraph workflows are async by default. Agents run concurrently
-# using asyncio.gather, so we set up the async structure from the start.
 async def main():
     """Run the due diligence workflow."""
-    print("Workflow will run here")
+    print("Starting Due Diligence Workflow...\n")
+
+    result = await run_due_diligence(
+        startup_name="TechStartup Inc",
+        startup_description="An AI-powered platform for automated testing"
+    )
+
+    print("\n--- Final State ---")
+    print(f"Status: {result.get('current_stage')}")
+    print(f"Errors: {result.get('errors', [])}")
 
 
 if __name__ == "__main__":

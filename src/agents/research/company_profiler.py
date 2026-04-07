@@ -1,5 +1,5 @@
 from ..base import run_agent, AgentResult, parse_json_from_output
-
+from ...config.agent_configs import COMPANY_PROFILER
 
 async def run_company_profiler(
     startup_name: str,
@@ -16,11 +16,12 @@ Format your response as valid JSON:
 """
 
     result = await run_agent(
-        agent_name="company_profiler",
+        agent_name=COMPANY_PROFILER.name,
         prompt=prompt,
-        tools=["WebSearch", "WebFetch"],
-        model="haiku",
-        timeout_seconds=90
+        tools=COMPANY_PROFILER.tools,
+        model=COMPANY_PROFILER.model,
+        system_prompt=COMPANY_PROFILER.system_prompt,
+        timeout_seconds=COMPANY_PROFILER.timeout_seconds
     )
 
     if result.success and result.raw_output:
